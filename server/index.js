@@ -57,6 +57,8 @@ fastify.addHook("preHandler", (request, _reply, done) => {
 // Una función para compborar si el usuario existe.
 // En otro caso, devuelve un 401
 const checkAuthentication = (request, reply, done) => {
+  console.log("checkAuthentication request: "+request);
+  
   if (request.token == null) {
     reply.code(401).send({
       error: "El token no está presente en la petición",
@@ -101,10 +103,11 @@ fastify.post("/api/register", (request, reply) => {
     });
   } else {
     // Encriptamos la contraseña
+
     bcrypt.hash(password, SALT_ROUNDS_TO_ENCRYPT, (err, hash) => {
       if (err) {
         return reply.code(500).send({
-          error: "Hubo un error al almacenar la contraseña",
+          error: "Hubo un error guardando el usuario",
         });
       }
 
